@@ -8,7 +8,6 @@ for (const control of controls) {
     const mode = control.dataset.light;
     const label = control.textContent.trim();
     for (const button of controls) button.setAttribute('aria-pressed', String(button === control));
-    photo.src = 'assets/lights-' + mode + '.webp';
     photo.alt = label + '下的控制器正面灯效实拍';
     caption.textContent = label + '实拍';
     lighting.classList.toggle('bright', mode === 'bright');
@@ -37,3 +36,19 @@ film.addEventListener('close', () => {
   video.currentTime = 0;
   document.body.classList.remove('watching');
 });
+
+if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const reveal = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.classList.add('in-view');
+      reveal.unobserve(entry.target);
+    }
+  }, { threshold: 0.08 });
+
+  for (const element of document.querySelectorAll(
+    '.light-photo, .detail-grid article, .structure > img, .software > img, .dimensions figure'
+  )) {
+    reveal.observe(element);
+  }
+}

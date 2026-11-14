@@ -37,13 +37,29 @@ nav a:hover, .spec-link:hover, .back-top:hover, .guide-link:hover { text-decorat
 .film-link { display: inline-flex; align-items: center; gap: 9px; padding: 10px 20px; border-radius: 24px; background: var(--ink); color: white; }
 .film-link i { border-block: 5px solid transparent; border-left: 8px solid white; }
 .spec-link, .guide-link { color: var(--accent); font-weight: 600; }
-.metrics { border-block: 1px solid var(--line); }
-.metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); padding-block: 23px; }
-.metric-grid div { display: flex; flex-direction: column-reverse; align-items: center; border-right: 1px solid var(--line); }
-.metric-grid div:last-child { border: 0; }
-.metric-grid dd { font-size: clamp(29px, 3.1vw, 44px); font-weight: 720; line-height: 1.2; color: #315972; }
-.metric-grid dt { font-size: 14px; margin-top: 5px; color: var(--muted); }
-.metric-grid small { font-size: .58em; }
+.metrics { background: #262822; color: #faf8ef; }
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(88%, 1296px);
+  padding-block: 28px;
+}
+.metric-grid > div { display: flex; align-items: baseline; gap: 18px; }
+.metric-grid > div + div { padding-left: 12%; border-left: 1px solid #54554c; }
+.metric-grid dd {
+  order: -1;
+  font-size: clamp(32px, 3.5vw, 56px);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.12;
+  letter-spacing: -.06em;
+  white-space: nowrap;
+}
+.metric-grid dt { color: #d1d2c6; font-size: 13px; white-space: nowrap; }
+.metric-grid small { color: #ff9566; font-size: .46em; letter-spacing: -.03em; }
+@media (max-width: 940px) {
+  .metric-grid > div { flex-direction: column; gap: 4px; }
+}
 .section { padding-block: clamp(50px, 6.2vw, 90px); }
 .section h2 { font-size: clamp(32px, 3.3vw, 50px); line-height: 1.25; letter-spacing: -.045em; }
 .section p { line-height: 1.85; color: var(--muted); }
@@ -111,8 +127,8 @@ video { width: 100%; display: block; aspect-ratio: 1; }
   .hero p { font-size: 14px; margin-top: 10px; }
   .actions { margin-top: 15px; }
   .cabinet { width: 100%; height: clamp(350px, 100vw, 490px); margin-top: 16px; }
-  .metric-grid { padding-block: 17px; }
-  .metric-grid dt { font-size: 12px; }
+  .metric-grid { width: 90%; padding-block: 20px; }
+  .metric-grid dt { font-size: 11px; }
   .lighting, .structure, .software, .spec-grid, .detail-grid { grid-template-columns: 1fr; gap: 26px; }
   .lighting-copy, .structure > div { grid-row: 1; }
   .light-photo img { height: 340px; }
@@ -124,4 +140,47 @@ video { width: 100%; display: block; aspect-ratio: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+.light-photo img { grid-area: 1 / 1; }
+.light-overlay { opacity: 0; pointer-events: none; }
+.bright .light-overlay { opacity: 1; }
+
+@keyframes cabinet-arrives {
+  from { opacity: .3; transform: translate(18px, 16px) scale(.965); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes detail-appears {
+  from { opacity: .35; transform: translateY(15px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ink-line {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cabinet {
+    transform-origin: 52% 100%;
+    animation: cabinet-arrives 760ms cubic-bezier(.18,.76,.28,1) backwards;
+  }
+  .hero h2 span { position: relative; text-decoration: none; }
+  .hero h2 span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -.045em;
+    height: .08em;
+    background: #ff8392;
+    transform-origin: left;
+    animation: ink-line 450ms 200ms cubic-bezier(.2,.75,.3,1) backwards;
+  }
+  .in-view { animation: detail-appears 520ms cubic-bezier(.2,.75,.3,1) backwards; }
+  .light-overlay { transition: opacity 340ms ease-in-out; }
+  .light-photo { transition: background-color 340ms ease-in-out; }
+  .switcher button { transition: color 180ms, background-color 180ms; }
+  @media (min-width: 701px) {
+    .detail-grid article:nth-child(2) { animation-delay: 65ms; }
+    .detail-grid article:nth-child(3) { animation-delay: 130ms; }
+  }
 }
