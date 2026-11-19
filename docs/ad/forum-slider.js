@@ -4,10 +4,11 @@
   const forumOrigin = 'https://forum.akiacg.com';
   if (window.location.origin !== forumOrigin) return;
 
-  const version = '20261119-2';
+  const version = '20261119-3';
   const advertOrigin = 'https://yimaiplay.akiacg.com';
   const embedURL = advertOrigin + '/ad/?placement=forum-slider&v=' + version;
   const coverURL = advertOrigin + '/ad/forum-cover.webp?v=' + version;
+  const mobileCoverURL = advertOrigin + '/ad/forum-cover-mobile.webp?v=' + version;
   const targetPath = '/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif';
   const controllers = new Map();
   let scanQueued = false;
@@ -58,11 +59,13 @@
     const originalLabel = slide.getAttribute('aria-label');
     const originalTabIndex = slide.getAttribute('tabindex');
     const originalPointerEvents = slide.style.pointerEvents;
+    const originalVisibility = slide.style.visibility;
     const originalTrackPosition = track.style.position;
     slide.setAttribute('aria-label', 'YiMaiPlay 音乐游戏控制器');
     slide.removeAttribute('href');
     slide.setAttribute('tabindex', '-1');
     slide.style.pointerEvents = 'none';
+    slide.style.visibility = 'hidden';
     track.style.position = 'relative';
 
     let frame = null;
@@ -75,14 +78,28 @@
     const panel = document.createElement('div');
     panel.className = 'YiMaiPlaySliderPanel';
     panel.setAttribute('aria-label', 'YiMaiPlay 产品展示');
-    panel.style.cssText = 'position:absolute;left:100%;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden;container-type:size';
+    panel.style.cssText = 'position:absolute;top:0;width:100%;height:100%;z-index:1;isolation:isolate;pointer-events:none;overflow:hidden;container-type:size;background:#f0f9fd';
 
-    panel.style.background = 'center / cover no-repeat url("' + coverURL + '")';
+    // The opaque poster sits above the live document until HTML and CSS are ready.
+    const cover = document.createElement('picture');
+    cover.className = 'YiMaiPlaySliderCover';
+    cover.setAttribute('aria-hidden', 'true');
+    cover.style.cssText = 'position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;background:#f0f9fd';
+    const mobileSource = document.createElement('source');
+    mobileSource.media = '(max-width: 768px)';
+    mobileSource.srcset = mobileCoverURL;
+    const coverImage = document.createElement('img');
+    coverImage.alt = '';
+    coverImage.draggable = false;
+    coverImage.style.cssText = 'display:block;position:absolute;left:50%;top:0;transform:translateX(-50%);max-width:none;width:auto;height:100%';
+    cover.append(mobileSource, coverImage);
+    coverImage.src = coverURL;
+    panel.append(cover);
 
     // The native slider receives pointer events over the left half. The model owns the right half.
     const gestures = document.createElement('div');
     gestures.setAttribute('aria-hidden', 'true');
-    gestures.style.cssText = 'position:absolute;left:0;top:0;width:50%;height:100%;z-index:1;pointer-events:auto;touch-action:pan-y';
+    gestures.style.cssText = 'position:absolute;left:0;top:0;width:50%;height:100%;z-index:2;pointer-events:auto;touch-action:pan-y';
     panel.append(gestures);
 
     const cta = document.createElement('a');
@@ -90,7 +107,7 @@
     cta.textContent = '了解更多';
     cta.href = advertOrigin + '/';
     cta.target = '_top';
-    cta.style.cssText = 'position:absolute;left:var(--yimaiplay-cta-left,7%);bottom:7%;z-index:2;pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:6px 16px;padding:clamp(5px,1.6cqh,9px) clamp(13px,1.6cqw,22px);border:1px solid #36576a;border-radius:24px;background:#ffffffeb;color:#254758;font:600 13px/1.2 Inter,Arial,sans-serif;font-size:clamp(11px,1.05cqw,15px);text-decoration:none;box-shadow:0 2px 10px #1d35450a';
+    cta.style.cssText = 'position:absolute;left:var(--yimaiplay-cta-left,7%);bottom:7%;z-index:3;pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:6px 16px;padding:clamp(5px,1.6cqh,9px) clamp(13px,1.6cqw,22px);border:1px solid #36576a;border-radius:24px;background:#ffffffeb;color:#254758;font:600 13px/1.2 Inter,Arial,sans-serif;font-size:clamp(11px,1.05cqw,15px);text-decoration:none;box-shadow:0 2px 10px #1d35450a';
     cta.addEventListener('pointerdown', event => event.stopPropagation());
     cta.addEventListener('pointerup', event => event.stopPropagation());
     cta.addEventListener('click', event => event.stopPropagation());
@@ -123,12 +140,16 @@
         frame.tabIndex = -1;
         frame.setAttribute('allow', 'autoplay');
         frame.referrerPolicy = 'strict-origin-when-cross-origin';
-        frame.style.cssText = 'position:absolute;inset:0;display:block;width:100%;height:100%;border:0;opacity:0;pointer-events:none;color-scheme:light';
+        frame.style.cssText = 'position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;border:0;background:#e5f4fc;pointer-events:none;color-scheme:light';
+        frame.addEventListener('load', () => {
+          frame.contentWindow?.postMessage({ type: 'yimaiplay:ad-status-request' }, advertOrigin);
+        });
         frame.src = embedURL;
         panel.prepend(frame);
       }
       if (frame) {
-        frame.style.opacity = ready ? '1' : '0';
+        cover.hidden = ready;
+        cover.style.display = ready ? 'none' : 'block';
         frame.style.pointerEvents = ready && selected ? 'auto' : 'none';
         frame.tabIndex = ready && selected ? 0 : -1;
         frame.setAttribute('aria-hidden', String(!ready || !selected));
@@ -211,6 +232,7 @@
         }
         if (!slide.hasAttribute('href') && originalHref !== null) slide.setAttribute('href', originalHref);
         slide.style.pointerEvents = originalPointerEvents;
+        if (slide.style.visibility === 'hidden') slide.style.visibility = originalVisibility;
         track.style.position = originalTrackPosition;
       }
     };

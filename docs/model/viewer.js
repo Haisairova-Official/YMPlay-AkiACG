@@ -8,6 +8,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const embedded = document.documentElement.classList.contains('embedded');
 const forumModel = document.documentElement.classList.contains('forum-model');
 let paused = embedded;
+let loadFailed = false;
 if (forumModel) {
   model.setAttribute('disable-zoom', '');
   model.setAttribute('disable-tap', '');
@@ -54,18 +55,33 @@ model.addEventListener('progress', event => {
   message.textContent = progress < 100 ? '正在载入模型 ' + progress + '%' : '正在准备视图';
 });
 
-model.addEventListener('load', () => {
+function reportLoadState() {
+  if (!embedded) return;
+  if (model.loaded) {
+    window.parent.postMessage({ type: 'yimaiplay:viewer-ready' }, window.location.origin);
+  } else if (loadFailed) {
+    window.parent.postMessage({ type: 'yimaiplay:viewer-error' }, window.location.origin);
+  }
+}
+
+function handleModelLoaded() {
+  loadFailed = false;
   state.hidden = true;
   if (embedded) {
     model.autoRotate = !paused && !reducedMotion.matches;
     model.autoRotateDelay = forumModel ? 2000 : 150;
     model.rotationPerSecond = '5deg';
-    window.parent.postMessage({ type: 'yimaiplay:viewer-ready' }, window.location.origin);
+    reportLoadState();
   }
   if (reducedMotion.matches) model.jumpCameraToGoal();
+}
+model.addEventListener('load', handleModelLoaded);
+customElements.whenDefined('model-viewer').then(() => {
+  if (model.loaded) handleModelLoaded();
 });
 
 model.addEventListener('error', () => {
+  loadFailed = true;
   state.hidden = false;
   spinner.hidden = true;
   message.textContent = '模型暂时未能载入，请重新加载。';
@@ -77,6 +93,10 @@ retry.addEventListener('click', () => window.location.reload());
 
 window.addEventListener('message', event => {
   if (!embedded || event.origin !== window.location.origin || event.source !== window.parent) return;
+  if (event.data?.type === 'yimaiplay:viewer-status') {
+    reportLoadState();
+    return;
+  }
   if (event.data?.type !== 'yimaiplay:viewer' || typeof event.data.paused !== 'boolean') return;
   paused = event.data.paused;
   if (event.data.showing === false && model.loaded && !forumModel) {

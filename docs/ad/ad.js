@@ -22,17 +22,77 @@ let viewerReady = false;
 let parentPaused = forumPlacement;
 let inViewport = true;
 let pageInactive = false;
+let turntable = null;
+let turntablePending = null;
+let turntableGeneration = 0;
+let viewerEnabled = !forumPlacement;
 
 function playbackPaused() {
   return !playing || document.hidden || interacting || parentPaused || !inViewport || pageInactive;
 }
 
+function reportAdState() {
+  if (forumPlacement) window.parent.postMessage({ type: 'yimaiplay:ad-ready' }, forumOrigin);
+}
+
 function syncViewer() {
+  if (!viewerEnabled) return;
   viewer.contentWindow?.postMessage({
     type: 'yimaiplay:viewer',
     paused: playbackPaused() || sceneIndex !== 0,
     showing: sceneIndex === 0 && !document.hidden && !parentPaused && inViewport && !pageInactive,
   }, location.origin);
+}
+
+function handleModelInteraction(active) {
+  interacting = active;
+  if (forumPlacement) {
+    advert.classList.toggle('model-interacting', interacting);
+    syncViewer();
+  } else {
+    if (!interacting) elapsed = 0;
+    updatePlayback();
+  }
+}
+
+function removeTurntable() {
+  turntableGeneration += 1;
+  turntablePending = null;
+  if (turntable) {
+    turntable.destroy();
+    turntable = null;
+    handleModelInteraction(false);
+  }
+  advert.classList.remove('turntable-ready');
+}
+
+async function enableForumTurntable() {
+  if (!forumPlacement || viewerReady || turntable || turntablePending) return;
+  const generation = turntableGeneration;
+  const task = (async () => {
+    const { mountTurntable } = await import('./forum-turntable.js?v=20261119-3');
+    if (viewerReady || generation !== turntableGeneration) return;
+    const mounted = await mountTurntable(
+      document.querySelector('.model-stage'),
+      new URL('./forum-turntable.webp?v=20261119-3', location.href),
+      { onInteraction: handleModelInteraction },
+    );
+    if (viewerReady || generation !== turntableGeneration) {
+      mounted.destroy();
+      return;
+    }
+    turntable = mounted;
+    advert.classList.add('turntable-ready');
+    modelHint.hidden = false;
+  })();
+  turntablePending = task;
+  try {
+    await task;
+  } catch {
+    // Keep the product photograph when both interactive views are unavailable.
+  } finally {
+    if (turntablePending === task) turntablePending = null;
+  }
 }
 
 function updatePlayback() {
@@ -98,6 +158,7 @@ document.addEventListener('fullscreenchange', () => {
 });
 document.addEventListener('visibilitychange', () => {
   interacting = false;
+  advert.classList.remove('model-interacting');
   updatePlayback();
 });
 reducedMotion.addEventListener('change', () => {
@@ -112,19 +173,27 @@ player.addEventListener('keydown', event => {
   playing = !playing;
   updatePlayback();
 });
-viewer.addEventListener('load', syncViewer);
+viewer.addEventListener('load', () => {
+  if (!viewerEnabled) return;
+  syncViewer();
+  viewer.contentWindow?.postMessage({ type: 'yimaiplay:viewer-status' }, location.origin);
+});
 window.addEventListener('message', event => {
   if (forumPlacement && event.origin === forumOrigin && event.source === window.parent) {
+    if (event.data?.type === 'yimaiplay:ad-status-request') {
+      reportAdState();
+      return;
+    }
     if (event.data?.type === 'yimaiplay:ad-playback' && typeof event.data.paused === 'boolean') {
       parentPaused = event.data.paused;
       updatePlayback();
     }
     return;
   }
-  if (event.origin !== location.origin || event.source !== viewer.contentWindow) return;
+  if (!viewerEnabled || event.origin !== location.origin || event.source !== viewer.contentWindow) return;
   if (event.data?.type === 'yimaiplay:viewer-ready') {
     viewerReady = true;
-    if (forumPlacement) window.parent.postMessage({ type: 'yimaiplay:ad-ready' }, forumOrigin);
+    removeTurntable();
     advert.classList.add('model-ready');
     modelHint.hidden = false;
     viewer.tabIndex = sceneIndex === 0 ? 0 : -1;
@@ -132,19 +201,13 @@ window.addEventListener('message', event => {
   }
   if (event.data?.type === 'yimaiplay:viewer-error') {
     viewerReady = false;
-    if (forumPlacement) window.parent.postMessage({ type: 'yimaiplay:ad-error' }, forumOrigin);
     advert.classList.remove('model-ready');
-    modelHint.hidden = true;
+    modelHint.hidden = !turntable;
     viewer.tabIndex = -1;
+    enableForumTurntable();
   }
   if (event.data?.type === 'yimaiplay:viewer-interaction' && sceneIndex === 0) {
-    interacting = event.data.active === true;
-    if (forumPlacement) {
-      syncViewer();
-    } else {
-      if (!interacting) elapsed = 0;
-      updatePlayback();
-    }
+    handleModelInteraction(event.data.active === true);
   }
 });
 
@@ -172,9 +235,26 @@ if (forumPlacement) {
   }
 
 }
-const modelUrl = new URL(viewer.dataset.src, location.href);
-if (forumPlacement) modelUrl.searchParams.set('placement', 'forum-slider');
-viewer.src = modelUrl.href;
+function canRenderWebGL() {
+  try {
+    const context = document.createElement('canvas').getContext('webgl2');
+    if (!context) return false;
+    context.getExtension('WEBGL_lose_context')?.loseContext();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+viewerEnabled = !forumPlacement || canRenderWebGL();
+if (viewerEnabled) {
+  const modelUrl = new URL(viewer.dataset.src, location.href);
+  if (forumPlacement) modelUrl.searchParams.set('placement', 'forum-slider');
+  viewer.src = modelUrl.href;
+  if (forumPlacement) setTimeout(enableForumTurntable, 6000);
+} else {
+  enableForumTurntable();
+}
 if (!forumPlacement) {
   video.preload = 'auto';
   video.src = video.dataset.src;
@@ -196,3 +276,4 @@ window.addEventListener('pageshow', () => {
   updatePlayback();
 });
 updatePlayback();
+reportAdState();

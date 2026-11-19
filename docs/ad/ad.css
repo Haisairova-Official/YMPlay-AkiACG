@@ -146,7 +146,7 @@ h1 span::after { content: ''; position: absolute; height: .065em; left: 0; right
   transition: opacity .4s;
 }
 .model-ready .model-view { opacity: 1; pointer-events: auto; }
-.advert.model-ready[data-scene="0"] .product { opacity: 0; animation: none; }
+.advert.model-ready[data-scene="0"] .product { opacity: 0; visibility: hidden; animation: none; }
 .model-hint {
   position: absolute;
   left: 0;
@@ -183,6 +183,8 @@ h1 span::after { content: ''; position: absolute; height: .065em; left: 0; right
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
+.forum-facts { display: none; }
+
 html.forum-slider,
 .forum-slider body {
   width: 100%;
@@ -199,15 +201,17 @@ html.forum-slider,
   max-width: none;
   margin: 0;
 }
-.forum-slider .advert { aspect-ratio: auto; container-type: size; }
+.forum-slider .advert { aspect-ratio: auto; container-type: size; background-color: #e5f4fc; }
 .forum-slider .controls,
 .forum-slider .film,
 .forum-slider .closing,
 .forum-slider noscript { display: none !important; }
 .forum-slider a { pointer-events: none; cursor: default; }
 .forum-slider .model-stage { right: 0; top: 0; width: 50%; height: 100%; }
-.forum-slider .model-view { height: calc(100% - 34px); }
+.forum-slider .model-view { height: calc(100% - 34px); transition: none; }
 .forum-slider .model-ready .model-view { pointer-events: auto; }
+.forum-slider .advert.turntable-ready .product { opacity: 0; visibility: hidden; animation: none; }
+.forum-slider .turntable-ready .model-view { opacity: 0; pointer-events: none; }
 .forum-slider .model-hint { font-size: 12px; bottom: 9px; color: #34576a; }
 .forum-slider .copy { top: 29%; width: 47%; pointer-events: none; }
 .forum-slider .brand { top: 7%; width: clamp(100px, 18cqw, 260px); }
@@ -227,4 +231,35 @@ html.forum-slider,
 
 @media (max-width: 360px) {
   .forum-slider .eyebrow { font-size: 9px; }
+}
+
+.forum-slider .intro-message,
+.forum-slider .forum-facts { transition: none; }
+.forum-slider .intro-message .enter,
+.forum-slider .intro-message h1 span::after { animation: none !important; }
+.forum-slider .forum-facts { position: absolute; inset: 0; display: block; opacity: 0; visibility: hidden; }
+.forum-slider .forum-facts dl { display: flex; gap: 3cqw; margin: 0; }
+.forum-slider .forum-facts dl > div { display: flex; flex-direction: column-reverse; }
+.forum-slider .forum-facts dt { font-size: clamp(11px, 1cqw, 16px); }
+.forum-slider .forum-facts dd { margin: 0; font-size: clamp(32px, 14cqh, 66px); font-weight: 800; line-height: 1.2; letter-spacing: -.04em; }
+.forum-slider .forum-facts small { font-size: .42em; }
+@keyframes forum-message-cycle {
+  0%, 40%, 100% { opacity: 1; visibility: visible; transform: translateY(0); }
+  46%, 94% { opacity: 0; visibility: hidden; transform: translateY(-8px); }
+}
+@keyframes forum-facts-cycle {
+  0%, 40%, 100% { opacity: 0; visibility: hidden; transform: translateY(8px); }
+  46%, 94% { opacity: 1; visibility: visible; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .forum-slider .intro-message { animation: forum-message-cycle 12s ease infinite; }
+  .forum-slider .forum-facts { animation: forum-facts-cycle 12s ease infinite; }
+}
+.forum-slider .model-interacting .intro-message,
+.forum-slider .model-interacting .forum-facts { animation-play-state: paused; }
+@media (max-width: 700px) {
+  .forum-slider .forum-facts .eyebrow { font-size: 9px; white-space: nowrap; }
+  .forum-slider .forum-facts dl { flex-direction: column; gap: 6px; }
+  .forum-slider .forum-facts dd { font-size: 29px; line-height: 1.05; }
+  .forum-slider .forum-facts dt { font-size: 9px; line-height: 1.3; }
 }
