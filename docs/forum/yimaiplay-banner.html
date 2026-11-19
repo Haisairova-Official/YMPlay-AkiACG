@@ -118,6 +118,7 @@
     const release = 'forum-inline-1';
     const forumOrigin = 'https://forum.akiacg.com';
     const embedded = window.parent !== window;
+    const legacyPlacement = new URLSearchParams(location.search).get('placement') === 'forum-slider';
     const banner = document.getElementById('banner');
     const stage = document.getElementById('stage');
     const logo = document.getElementById('logo');
@@ -138,7 +139,9 @@
     let assetsStarted = false;
 
     function postState() {
-      if (embedded) window.parent.postMessage({ type: ready ? 'yimaiplay:banner-ready' : 'yimaiplay:banner-error', release }, forumOrigin);
+      if (!embedded) return;
+      const channel = legacyPlacement ? 'yimaiplay:ad-' : 'yimaiplay:banner-';
+      window.parent.postMessage({ type: channel + (ready ? 'ready' : 'error'), release }, forumOrigin);
     }
     function updatePlayback() {
       const paused = !ready || parentPaused || document.hidden || !inViewport || pageInactive || motion.matches;

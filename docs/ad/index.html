@@ -8,7 +8,11 @@
   <link rel="icon" href="../assets/brand-icon.png?v=20261119-4" type="image/png">
   <link rel="preload" as="image" href="../assets/cabinet.webp?v=20261119-4">
   <link rel="preload" as="image" href="../assets/wordmark.webp?v=20261119-4">
-  <script>if (new URLSearchParams(location.search).get('placement') === 'forum-slider') document.documentElement.classList.add('forum-slider');</script>
+  <script>
+    if (new URLSearchParams(location.search).get('placement') === 'forum-slider') {
+      location.replace('../forum/yimaiplay-banner.html?placement=forum-slider&v=20261119-7');
+    }
+  </script>
   <!-- Keep the embedded frame styled on its first paint. -->
   <style>
 :root {
@@ -314,7 +318,7 @@ html.forum-slider,
     <section class="scene film" aria-label="灯效与核心参数" aria-hidden="true" inert>
       <video muted playsinline preload="none" poster="../assets/film-poster.webp?v=20261119-4" data-src="../assets/yimaiplay.mp4?v=20261119-4" aria-label="YiMaiPlay 原版产品短片"></video>
       <div class="film-copy">
-        <p class="eyebrow enter">COB 灯带 · 色温可调</p>
+        <p class="eyebrow enter">COB 灯带 · 色温、亮度可调</p>
         <h2 class="enter">仿官机逻辑<br>高亮 LED 灯组</h2>
         <p class="subline enter">行业领先水平的触摸体验</p>
         <div class="specs enter">
