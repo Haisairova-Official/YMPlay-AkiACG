@@ -115,30 +115,54 @@
 
     const buttonStyle = cta.style.cssText;
     let printedLinkActive = false;
+    let compactPoster = false;
     function positionPosterLink() {
-      // Preserve the uploaded poster as-is. Make its printed button the click target
-      // when the centered cover crop includes it. On narrow screens use the normal CTA.
+      // A center crop of the wide artwork loses both the title and the machine.
+      // On narrow slots reframe those two regions of the same uploaded image.
       if (!ready && coverImage.src.split(/[?#]/, 1)[0] === printedPoster) {
         const width = panel.clientWidth;
         const height = panel.clientHeight;
-        const scale = Math.max(width / 2020, height / 450);
-        const left = (width - 2020 * scale) / 2 + 75 * scale;
+        if (!width || !height) return;
+        let scale = Math.max(width / 2020, height / 450);
+        let originX = (width - 2020 * scale) / 2;
+        if (width / height < 3.9) {
+          const split = Math.min(width * 0.54, height * 625 / 450);
+          // Leave room beside the native slider's previous-slide arrow.
+          originX = Math.min(28, width * 0.08);
+          scale = (split - originX) / 625;
+          cover.style.background = `#f3eee2 url("${printedPoster}") ${originX}px center / ${2020 * scale}px auto no-repeat`;
+          const productWidth = width - split;
+          // Center the right crop on the illuminated ring at x=1590 of 2020.
+          const productScale = Math.max(height / 450, productWidth / 2020);
+          const cropOffset = Math.max(0, Math.min(2020 * productScale - productWidth, 1590 * productScale - productWidth / 2));
+          Object.assign(coverImage.style, { marginLeft: split + 'px', width: productWidth + 'px', objectPosition: -cropOffset + 'px center' });
+          compactPoster = true;
+        } else resetCrop();
+        const left = originX + 75 * scale;
         const top = (height - 450 * scale) / 2 + 380 * scale;
         const buttonWidth = 182 * scale;
         const buttonHeight = 44 * scale;
         if (left >= 0 && left + buttonWidth <= width && top >= 0 && top + buttonHeight <= height) {
-          Object.assign(cta.style, { left: left + 'px', top: top + 'px', bottom: 'auto',
-            width: buttonWidth + 'px', height: buttonHeight + 'px', minHeight: '0',
+          const hitHeight = Math.min(height, Math.max(32, buttonHeight));
+          const hitTop = Math.max(0, Math.min(height - hitHeight, top - (hitHeight - buttonHeight) / 2));
+          Object.assign(cta.style, { left: left + 'px', top: hitTop + 'px', bottom: 'auto',
+            width: buttonWidth + 'px', height: hitHeight + 'px', minHeight: '0',
             padding: '0', background: 'transparent', borderColor: 'transparent',
             color: 'transparent', boxShadow: 'none' });
           printedLinkActive = true;
           return;
         }
-      }
+      } else resetCrop();
       if (printedLinkActive) {
         cta.style.cssText = buttonStyle;
         printedLinkActive = false;
       }
+    }
+    function resetCrop() {
+      if (!compactPoster) return;
+      cover.style.background = '#f0f9fd';
+      Object.assign(coverImage.style, { marginLeft: '', width: '100%', objectPosition: 'center' });
+      compactPoster = false;
     }
     const coverSize = new ResizeObserver(positionPosterLink);
     coverSize.observe(panel);
