@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#11191f">
+  <title>YiMaiPlay · 横版动态广告</title>
+  <link rel="icon" href="../assets/brand-icon.png" type="image/png">
+  <link rel="preload" as="image" href="../assets/cabinet.webp">
+  <link rel="preload" as="image" href="../assets/wordmark.webp">
+  <script>if (new URLSearchParams(location.search).get('placement') === 'forum-slider') document.documentElement.classList.add('forum-slider');</script>
+  <link rel="stylesheet" href="ad.css">
+  <script defer src="ad.js"></script>
+</head>
+<body>
+<main class="player" tabindex="0" aria-label="YiMaiPlay 动态广告，可使用空格键播放或暂停">
+  <div class="advert" data-scene="0">
+    <p class="forum-links">点击查看完整广告</p>
+    <div class="backdrop" aria-hidden="true"></div>
+    <div class="orbit" aria-hidden="true"></div>
+    <a class="brand" href="https://yimaiplay.akiacg.com/" target="_blank" rel="noopener" aria-label="访问 YiMaiPlay 官网">
+      <img src="../assets/wordmark.webp" width="900" height="187" alt="YiMaiPlay">
+    </a>
+    <img class="product" src="../assets/cabinet.webp" width="890" height="1110" alt="" aria-hidden="true">
+    <section class="scene intro active" aria-label="街机风格，轻松上手">
+      <div class="model-stage">
+        <iframe class="model-view" src="../model/?embed=1" title="YiMaiPlay 交互模型，可拖动查看" loading="eager" allow="fullscreen" tabindex="-1"></iframe>
+        <span class="model-hint" hidden>拖动查看</span>
+      </div>
+      <div class="copy">
+        <p class="eyebrow enter">音乐游戏控制器 · 2026</p>
+        <h1 class="enter">街机风格<br><span>轻松上手</span></h1>
+        <p class="subline enter">HAN DEVICE × LiHong Workshop</p>
+      </div>
+    </section>
+    <section class="scene film" aria-label="灯效与核心参数" aria-hidden="true" inert>
+      <video muted playsinline preload="auto" poster="../assets/film-poster.webp" src="../assets/yimaiplay.mp4" aria-label="YiMaiPlay 原版产品短片"></video>
+      <div class="film-copy">
+        <p class="eyebrow enter">COB 灯带 · 色温可调</p>
+        <h2 class="enter">点亮，<br>游玩的时刻。</h2>
+        <div class="specs enter">
+          <div><b>34</b><span>分区无痕触摸</span></div>
+          <div><b>333<small> Hz</small></b><span>触摸刷新率</span></div>
+          <div><b>32<small> bit</small></b><span>双核 ARM 主控</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="scene closing" aria-label="产品细节与官网入口" aria-hidden="true" inert>
+      <div class="copy">
+        <p class="eyebrow enter">ITO 触摸玻璃 · PC 注塑按键</p>
+        <h2 class="enter">细节，<br>触手可及。</h2>
+        <div class="closeups enter">
+          <figure><img src="../assets/glass.webp" width="548" height="342" alt="磨砂触摸玻璃"><figcaption>34 分区触摸</figcaption></figure>
+          <figure><img src="../assets/switch.webp" width="419" height="279" alt="按键内部铍铜弹片"><figcaption>铍铜合金弹片</figcaption></figure>
+        </div>
+        <a class="visit enter" href="https://yimaiplay.akiacg.com/" target="_blank" rel="noopener">了解 YiMaiPlay</a>
+      </div>
+      <a class="community" href="https://forum.akiacg.com/" target="_blank" rel="noopener">
+        <img src="../assets/akiacg-community.png" width="174" height="60" alt="">
+        <span>Powered By AkiACG Community</span>
+      </a>
+    </section>
+  </div>
+  <div class="controls">
+    <button class="toggle" type="button" aria-label="暂停广告" title="暂停广告"><span aria-hidden="true">Ⅱ</span></button>
+    <div class="chapters" role="group" aria-label="选择广告片段">
+      <button type="button" data-index="0" aria-label="街机风格" aria-pressed="true"><span>街机风格</span><i></i></button>
+      <button type="button" data-index="1" aria-label="灯效与参数" aria-pressed="false"><span>灯效与参数</span><i></i></button>
+      <button type="button" data-index="2" aria-label="细节与官网" aria-pressed="false"><span>细节与官网</span><i></i></button>
+    </div>
+    <button class="sound" type="button" aria-pressed="false">声音关</button>
+    <button class="fullscreen" type="button">全屏</button>
+  </div>
+  <noscript><p>启用 JavaScript 可播放完整广告。<a href="https://yimaiplay.akiacg.com/">访问 YiMaiPlay 官网</a></p></noscript>
+</main>
+</body>
+</html>

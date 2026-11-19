@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#edf1f3">
+  <title>YiMaiPlay · 3D 模型预览</title>
+  <script>if (new URLSearchParams(location.search).has("embed")) document.documentElement.classList.add("embedded");</script>
+  <link rel="stylesheet" href="viewer.css">
+  <script type="module" src="vendor/model-viewer.min.js"></script>
+  <script defer src="viewer.js"></script>
+</head>
+<body>
+  <main class="viewer-shell">
+    <header class="viewer-header">
+      <a class="brand" href="../"><img src="../assets/wordmark.webp" width="118" alt="YiMaiPlay"></a>
+      <h1>3D 模型预览</h1>
+    </header>
+
+    <div class="model-stage">
+      <model-viewer
+        id="product-model"
+        src="yimaiplay.glb"
+        alt="YiMaiPlay 音乐游戏控制器三维模型，包含机身、环形按键与支架。可拖动旋转和缩放查看。"
+        camera-controls
+        disable-pan
+        disable-tap
+        touch-action="none"
+        camera-target="0m 0.925m 0m"
+        camera-orbit="30deg 78deg 105%"
+        min-camera-orbit="auto 20deg 45%"
+        max-camera-orbit="auto 100deg 250%"
+        field-of-view="30deg"
+        min-field-of-view="30deg"
+        max-field-of-view="30deg"
+        shadow-intensity="0.8"
+        shadow-softness="0.85"
+        exposure="1.1"
+        environment-image="neutral"
+        interaction-prompt="none"
+        loading="eager">
+        <span slot="progress-bar"></span>
+      </model-viewer>
+
+      <div class="load-state" id="load-state" role="status" aria-live="polite">
+        <span class="loader" aria-hidden="true"></span>
+        <p id="load-message">正在载入模型</p>
+        <button id="retry" hidden>重新加载</button>
+      </div>
+
+      <aside class="dimensions" aria-label="含桌整体尺寸">
+        <p>含桌整体尺寸</p>
+        <strong>90 × 60 × 185 <span>cm</span></strong>
+        <p>长 × 宽 × 高</p>
+      </aside>
+
+      <div class="zoom-controls" role="group" aria-label="缩放控制">
+        <button type="button" id="zoom-in" aria-label="放大模型" title="放大">+</button>
+        <button type="button" id="zoom-out" aria-label="缩小模型" title="缩小">−</button>
+      </div>
+    </div>
+
+    <footer class="viewer-controls">
+      <div class="view-controls" role="group" aria-label="选择模型视角">
+        <button type="button" data-view="front" aria-pressed="false">正面</button>
+        <button type="button" data-view="side" aria-pressed="false">侧面</button>
+        <button type="button" data-view="back" aria-pressed="false">背面</button>
+        <span aria-hidden="true"></span>
+        <button type="button" id="reset">重置视角 <span aria-hidden="true">↺</span></button>
+      </div>
+      <p class="gesture-hint"><span class="mouse-hint">拖动旋转 · 滚轮缩放</span><span class="touch-hint">单指旋转 · 双指缩放</span></p>
+    </footer>
+  </main>
+  <noscript><p class="no-script">请开启 JavaScript 以旋转查看模型。</p></noscript>
+</body>
+</html>
