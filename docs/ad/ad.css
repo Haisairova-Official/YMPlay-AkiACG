@@ -64,12 +64,13 @@ h1, h2 { font-size: 6.4cqw; letter-spacing: -.045em; line-height: 1.08; font-wei
 h1 { font-style: italic; }
 h1 span { position: relative; display: inline-block; }
 h1 span::after { content: ''; position: absolute; height: .065em; left: 0; right: 0; bottom: -.07em; background: #ff8594; transform-origin: left; }
-.subline { font-size: 1.2cqw; color: #436779; margin-top: 3.6cqw; letter-spacing: .015em; }
+.subline { font-size: clamp(11px, 2.1cqw, 32px); line-height: 1.35; color: #436779; margin-top: 2.8cqw; }
 .film { background: #080b0e; }
 .film video { position: absolute; left: 1.5%; top: 6%; width: 48%; height: 85.33%; object-fit: contain; }
 .film-copy { position: absolute; left: 54%; top: 29%; right: 5%; color: #fcf8f2; }
 .film h2 { font-size: 5.1cqw; }
 .film .eyebrow { color: #a5c8d7; }
+.film .subline { margin-top: 1.7cqw; color: #dbe6ea; }
 .specs { display: grid; grid-template-columns: .82fr 1.1fr 1fr; margin-top: 3cqw; }
 .specs > div { padding-left: 1.5cqw; border-left: 1px solid #475453; }
 .specs > div:first-child { padding-left: 0; border: 0; }
@@ -167,12 +168,14 @@ h1 span::after { content: ''; position: absolute; height: .065em; left: 0; right
   .chapters button { white-space: nowrap; font-size: 11px; }
   .controls .sound, .controls .fullscreen { font-size: 11px; }
   .model-hint { font-size: 8px; bottom: 1%; }
-  .subline { font-size: 1.6cqw; }
-  .eyebrow { font-size: 1.6cqw; }
+  .eyebrow { font-size: max(9px, 1.6cqw); }
   .community { font-size: 1.35cqw; }
-  .visit { font-size: 1.65cqw; }
-  .closeups figcaption { font-size: 1.45cqw; }
-  .specs span { font-size: 1.4cqw; }
+  .visit { font-size: max(10px, 1.65cqw); }
+  .film-copy { top: 24%; right: 3%; }
+  .specs { grid-template-columns: 1fr 1fr 1.15fr; }
+  .specs span { word-break: keep-all; }
+  .closeups figure { width: 22.5cqw; }
+  .closeups figcaption, .specs span { font-size: max(9px, 1.45cqw); line-height: 1.18; }
 }
 @media (max-width: 420px) {
   .controls { gap: 8px; }
@@ -224,7 +227,7 @@ html.forum-slider,
   .forum-slider .copy { left: 50px; top: 29%; width: calc(50% - 60px); }
   .forum-slider .eyebrow { font-size: 10px; margin-bottom: 6px; letter-spacing: 0; }
   .forum-slider h1 { font-size: clamp(18px, calc(12.5cqw - 18px), 30px); line-height: 1.1; white-space: nowrap; }
-  .forum-slider .subline { display: none; }
+  .forum-slider .subline { font-size: 11px; margin-top: 1.5cqh; }
   .forum-slider .model-view { height: calc(100% - 28px); }
   .forum-slider .model-hint { font-size: 10px; bottom: 8px; }
   .forum-slider .product { width: 48%; right: 0; height: calc(100% - 28px); bottom: 28px; }
