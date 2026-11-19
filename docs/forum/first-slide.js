@@ -8,7 +8,7 @@
   const placement = 'homepage-first';
   if (window.__YMPLAY_FORUM_SLIDER__?.placement === placement) return;
   const advertOrigin = 'https://yimaiplay.akiacg.com';
-  const embedURL = advertOrigin + '/forum/yimaiplay-banner.html';
+  const embedURL = advertOrigin + '/forum/yimaiplay-banner.html?v=20261119-5';
   const coverURL = advertOrigin + '/forum/cover-wide-a4c1e96a.webp';
   const mobileCoverURL = advertOrigin + '/forum/cover-mobile-6e59dfa8.webp';
   // This specific artwork already includes a printed “了解更多” button.
