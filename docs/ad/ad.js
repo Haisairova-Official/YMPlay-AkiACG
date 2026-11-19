@@ -32,7 +32,9 @@ function playbackPaused() {
 }
 
 function reportAdState() {
-  if (forumPlacement) window.parent.postMessage({ type: 'yimaiplay:ad-ready' }, forumOrigin);
+  if (!forumPlacement) return;
+  const styled = getComputedStyle(advert).getPropertyValue('--forum-layout-ready').trim() === '1';
+  window.parent.postMessage({ type: styled ? 'yimaiplay:ad-ready' : 'yimaiplay:ad-error' }, forumOrigin);
 }
 
 function syncViewer() {
@@ -70,11 +72,11 @@ async function enableForumTurntable() {
   if (!forumPlacement || viewerReady || turntable || turntablePending) return;
   const generation = turntableGeneration;
   const task = (async () => {
-    const { mountTurntable } = await import('./forum-turntable.js?v=20261119-3');
+    const { mountTurntable } = await import('./forum-turntable.js?v=20261119-4');
     if (viewerReady || generation !== turntableGeneration) return;
     const mounted = await mountTurntable(
       document.querySelector('.model-stage'),
-      new URL('./forum-turntable.webp?v=20261119-3', location.href),
+      new URL('./forum-turntable.webp?v=20261119-4', location.href),
       { onInteraction: handleModelInteraction },
     );
     if (viewerReady || generation !== turntableGeneration) {

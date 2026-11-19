@@ -11,7 +11,7 @@
   [src^="assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif#"]
 )) {
   background-color: #f0f9fd;
-  background-image: var(--yimaiplay-poster, url("https://yimaiplay.akiacg.com/ad/forum-cover.webp?v=20261119-3"));
+  background-image: var(--yimaiplay-poster, url("https://yimaiplay.akiacg.com/ad/forum-cover.webp?v=20261119-4"));
   background-size: auto 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -31,6 +31,6 @@
 
 .YiMaiPlaySliderMore:focus-visible { outline: 3px solid #006878; outline-offset: 4px; }
 @media (max-width: 768px) {
-  .MagicSlider { --yimaiplay-poster: url("https://yimaiplay.akiacg.com/ad/forum-cover-mobile.webp?v=20261119-3"); }
+  .MagicSlider { --yimaiplay-poster: url("https://yimaiplay.akiacg.com/ad/forum-cover-mobile.webp?v=20261119-4"); }
   .YiMaiPlaySliderMore { --yimaiplay-cta-left: 50px; }
 }

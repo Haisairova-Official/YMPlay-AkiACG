@@ -4,7 +4,7 @@
   const forumOrigin = 'https://forum.akiacg.com';
   if (window.location.origin !== forumOrigin) return;
 
-  const version = '20261119-3';
+  const version = '20261119-4';
   const advertOrigin = 'https://yimaiplay.akiacg.com';
   const embedURL = advertOrigin + '/ad/?placement=forum-slider&v=' + version;
   const coverURL = advertOrigin + '/ad/forum-cover.webp?v=' + version;
@@ -138,7 +138,6 @@
         frame = document.createElement('iframe');
         frame.title = 'YiMaiPlay 可旋转产品模型';
         frame.tabIndex = -1;
-        frame.setAttribute('allow', 'autoplay');
         frame.referrerPolicy = 'strict-origin-when-cross-origin';
         frame.style.cssText = 'position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;border:0;background:#e5f4fc;pointer-events:none;color-scheme:light';
         frame.addEventListener('load', () => {
