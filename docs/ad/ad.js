@@ -50,10 +50,11 @@ function updatePlayback() {
   cancelAnimationFrame(frameRequest);
   frameRequest = null;
   lastFrame = null;
-  if (!paused) frameRequest = requestAnimationFrame(tick);
+  if (!paused && !forumPlacement) frameRequest = requestAnimationFrame(tick);
 }
 
 function showScene(index) {
+  if (forumPlacement) index = 0;
   sceneIndex = index;
   elapsed = 0;
   interacting = false;
@@ -65,7 +66,7 @@ function showScene(index) {
     scene.inert = !active;
     chapters[position].setAttribute('aria-pressed', String(active));
   });
-  viewer.tabIndex = !forumPlacement && index === 0 && viewerReady ? 0 : -1;
+  viewer.tabIndex = index === 0 && viewerReady ? 0 : -1;
   player.style.setProperty('--progress', '0');
   video.currentTime = 0;
   updatePlayback();
@@ -125,8 +126,8 @@ window.addEventListener('message', event => {
     viewerReady = true;
     if (forumPlacement) window.parent.postMessage({ type: 'yimaiplay:ad-ready' }, forumOrigin);
     advert.classList.add('model-ready');
-    modelHint.hidden = forumPlacement;
-    viewer.tabIndex = !forumPlacement && sceneIndex === 0 ? 0 : -1;
+    modelHint.hidden = false;
+    viewer.tabIndex = sceneIndex === 0 ? 0 : -1;
     syncViewer();
   }
   if (event.data?.type === 'yimaiplay:viewer-error') {
@@ -136,16 +137,20 @@ window.addEventListener('message', event => {
     modelHint.hidden = true;
     viewer.tabIndex = -1;
   }
-  if (event.data?.type === 'yimaiplay:viewer-interaction' && !forumPlacement && sceneIndex === 0) {
+  if (event.data?.type === 'yimaiplay:viewer-interaction' && sceneIndex === 0) {
     interacting = event.data.active === true;
-    if (!interacting) elapsed = 0;
-    updatePlayback();
+    if (forumPlacement) {
+      syncViewer();
+    } else {
+      if (!interacting) elapsed = 0;
+      updatePlayback();
+    }
   }
 });
 
 function tick(time) {
   frameRequest = null;
-  if (playbackPaused()) return;
+  if (playbackPaused() || forumPlacement) return;
   if (lastFrame !== null) elapsed += Math.min(time - lastFrame, 100);
   lastFrame = time;
   if (elapsed >= durations[sceneIndex]) {
@@ -159,8 +164,21 @@ function tick(time) {
 if (forumPlacement) {
   player.tabIndex = -1;
   player.setAttribute('aria-label', 'YiMaiPlay 产品广告');
-  viewer.setAttribute('aria-hidden', 'true');
-  viewer.inert = true;
+  for (const link of advert.querySelectorAll('a')) {
+    link.removeAttribute('href');
+    link.removeAttribute('target');
+    link.removeAttribute('aria-label');
+    link.tabIndex = -1;
+  }
+
+}
+const modelUrl = new URL(viewer.dataset.src, location.href);
+if (forumPlacement) modelUrl.searchParams.set('placement', 'forum-slider');
+viewer.src = modelUrl.href;
+if (!forumPlacement) {
+  video.preload = 'auto';
+  video.src = video.dataset.src;
+  video.load();
 }
 if ('IntersectionObserver' in window) {
   const visibilityObserver = new IntersectionObserver(entries => {

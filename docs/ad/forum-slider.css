@@ -1,0 +1,34 @@
+/* Static fallback matches only the original forum URL and explicit same-site forms. */
+.MagicSlider-track > .MagicSlide:has(> .MagicSlide-image:is(
+  [src="https://forum.akiacg.com/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif"],
+  [src^="https://forum.akiacg.com/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif?"],
+  [src^="https://forum.akiacg.com/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif#"],
+  [src="/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif"],
+  [src^="/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif?"],
+  [src^="/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif#"],
+  [src="assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif"],
+  [src^="assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif?"],
+  [src^="assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif#"]
+)) {
+  pointer-events: none;
+}
+.MagicSlider-track > .MagicSlide > .MagicSlide-image:is(
+  [src="https://forum.akiacg.com/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif"],
+  [src^="https://forum.akiacg.com/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif?"],
+  [src^="https://forum.akiacg.com/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif#"],
+  [src="/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif"],
+  [src^="/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif?"],
+  [src^="/assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif#"],
+  [src="assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif"],
+  [src^="assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif?"],
+  [src^="assets/magicslider/09ed3132a5ec1aaf55ef8b42967ee6e6.gif#"]
+) {
+  content: url("https://yimaiplay.akiacg.com/ad/forum-cover.webp?v=20261119-2");
+}
+.YiMaiPlaySliderMore:focus-visible {
+  outline: 3px solid #006878;
+  outline-offset: 4px;
+}
+@media (max-width: 768px) {
+  .YiMaiPlaySliderMore { --yimaiplay-cta-left: 50px; }
+}

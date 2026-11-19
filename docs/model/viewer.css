@@ -104,3 +104,6 @@ model-viewer::part(default-ar-button) { display: none; }
 .embedded .viewer-header, .embedded .viewer-controls,
 .embedded .dimensions, .embedded .zoom-controls { display: none; }
 .embedded .load-state { background: transparent; }
+
+.forum-model model-viewer { touch-action: none; cursor: grab; user-select: none; }
+.forum-model model-viewer:active { cursor: grabbing; }

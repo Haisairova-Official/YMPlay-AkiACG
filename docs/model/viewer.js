@@ -6,7 +6,15 @@ const retry = document.querySelector('#retry');
 const viewButtons = document.querySelectorAll('[data-view]');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const embedded = document.documentElement.classList.contains('embedded');
-let paused = false;
+const forumModel = document.documentElement.classList.contains('forum-model');
+let paused = embedded;
+if (forumModel) {
+  model.setAttribute('disable-zoom', '');
+  model.setAttribute('disable-tap', '');
+  model.setAttribute('touch-action', 'none');
+  model.setAttribute('alt', 'YiMaiPlay 控制器三维展示，拖动旋转');
+  model.addEventListener('dblclick', event => event.preventDefault());
+}
 const orbits = {
   front: '0deg 90deg 105%',
   side: '90deg 90deg 105%',
@@ -50,7 +58,7 @@ model.addEventListener('load', () => {
   state.hidden = true;
   if (embedded) {
     model.autoRotate = !paused && !reducedMotion.matches;
-    model.autoRotateDelay = 150;
+    model.autoRotateDelay = forumModel ? 2000 : 150;
     model.rotationPerSecond = '5deg';
     window.parent.postMessage({ type: 'yimaiplay:viewer-ready' }, window.location.origin);
   }
@@ -71,7 +79,7 @@ window.addEventListener('message', event => {
   if (!embedded || event.origin !== window.location.origin || event.source !== window.parent) return;
   if (event.data?.type !== 'yimaiplay:viewer' || typeof event.data.paused !== 'boolean') return;
   paused = event.data.paused;
-  if (event.data.showing === false && model.loaded) {
+  if (event.data.showing === false && model.loaded && !forumModel) {
     model.resetTurntableRotation();
     setView('30deg 78deg 105%');
     model.jumpCameraToGoal();
