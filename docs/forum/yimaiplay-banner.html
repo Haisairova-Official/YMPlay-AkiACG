@@ -77,6 +77,10 @@
       .hint { font-size: 10px; bottom: 8px; }
       .preview-cta { left: 50px; bottom: 6%; padding: 6px 14px; font-size: 12px; }
     }
+    .model-note { position: absolute; inset: auto 0 1px; color: #626f77; font: 400 clamp(8px, 2.65cqw, 11px)/1.2 sans-serif; text-align: center; white-space: nowrap; pointer-events: none; }
+.hint { bottom: 15px; }
+.banner { --forum-hint-space: 38px; }
+@media (max-width:700px) { .banner { --forum-hint-space: 32px; } }
   </style>
 </head>
 <body>
@@ -110,6 +114,7 @@
       <div class="turntable-host" id="turntable-host"></div>
       <p class="hint" id="hint" hidden>拖动旋转</p>
     </div>
+    <p class="model-note">*模型仅供展示参考，与量产机型有细微差别，建议参考实拍照片后选购。</p>
     <a class="preview-cta" id="preview-cta" href="https://yimaiplay.akiacg.com/" hidden>了解更多</a>
   </main>
   <script>
@@ -193,7 +198,7 @@
       const task = (async () => {
         const { mountTurntable } = await import('../ad/forum-turntable.js?v=20261119-4');
         if (modelReady || generation !== turntableGeneration) return;
-        const result = await mountTurntable(host, new URL('../ad/forum-turntable.webp?v=20261119-4', location.href), { onInteraction });
+        const result = await mountTurntable(host, new URL('../ad/forum-turntable.webp?v=20261122-1', location.href), { onInteraction });
         if (modelReady || generation !== turntableGeneration) { result.destroy(); return; }
         turntable = result;
         chooseVisual('turntable');
@@ -234,7 +239,7 @@
       });
       try {
         await import('../model/vendor/model-viewer.min.js?v=20261119-4');
-        model.src = new URL('../model/yimaiplay.glb?v=20261119-4', location.href).href;
+        model.src = new URL('../model/yimaiplay.glb?v=20261122-1', location.href).href;
       } catch { clearTimeout(fallbackTimer); showTurntable(); }
     }
     const pointers = new Set();

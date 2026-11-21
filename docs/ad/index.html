@@ -10,7 +10,7 @@
   <link rel="preload" as="image" href="../assets/wordmark.webp?v=20261119-4">
   <script>
     if (new URLSearchParams(location.search).get('placement') === 'forum-slider') {
-      location.replace('../forum/yimaiplay-banner.html?placement=forum-slider&v=20261119-7');
+      location.replace('../forum/yimaiplay-banner.html?placement=forum-slider&v=20261122-1');
     }
   </script>
   <!-- Keep the embedded frame styled on its first paint. -->
@@ -283,6 +283,8 @@ html.forum-slider,
   .forum-slider .forum-facts dd { font-size: 29px; line-height: 1.05; }
   .forum-slider .forum-facts dt { font-size: 9px; line-height: 1.3; }
 }
+    .model-note { position: absolute; inset: auto 0 1px; color: #626f77; font: 400 clamp(8px, 2.65cqw, 11px)/1.2 sans-serif; text-align: center; white-space: nowrap; pointer-events: none; }
+.model-hint { bottom: max(15px, 4%); }
   </style>
   <script defer src="ad.js?v=20261119-4"></script>
 </head>
@@ -297,7 +299,7 @@ html.forum-slider,
     <img class="product" src="../assets/cabinet.webp?v=20261119-4" width="890" height="1110" alt="" aria-hidden="true">
     <section class="scene intro active" aria-label="YiMaiPlay 音乐游戏控制器">
       <div class="model-stage">
-        <iframe class="model-view" data-src="../model/?embed=1&v=20261119-4" title="YiMaiPlay 交互模型，可拖动查看" loading="eager" tabindex="-1"></iframe>
+        <iframe class="model-view" data-src="../model/?embed=1&v=20261122-1" title="YiMaiPlay 交互模型，可拖动查看" loading="eager" tabindex="-1"></iframe>
         <span class="model-hint" hidden>拖动旋转</span>
       </div>
       <div class="copy">
@@ -314,6 +316,7 @@ html.forum-slider,
           </dl>
         </div>
       </div>
+      <p class="model-note">*模型仅供展示参考，与量产机型有细微差别，建议参考实拍照片后选购。</p>
     </section>
     <section class="scene film" aria-label="灯效与核心参数" aria-hidden="true" inert>
       <video muted playsinline preload="none" poster="../assets/film-poster.webp?v=20261119-4" data-src="../assets/yimaiplay.mp4?v=20261119-4" aria-label="YiMaiPlay 原版产品短片"></video>
