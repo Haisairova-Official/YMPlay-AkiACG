@@ -25,14 +25,27 @@ header { position: sticky; top: 0; z-index: 5; background: #f7fbfdf5; border-bot
 .brand img { width: 125px; }
 nav { gap: clamp(14px, 3vw, 36px); font-size: 14px; }
 nav a:hover, .spec-link:hover, .back-top:hover, .guide-link:hover { text-decoration: underline; text-underline-offset: 4px; }
-.hero { overflow: hidden; background: linear-gradient(18deg, #e2f3fd 0 17%, #f1f9fe 17% 68%, #e2f3fd 68%); }
+.hero { overflow: hidden; background: radial-gradient(ellipse at 77% 37%, #fff 0%, transparent 47%), linear-gradient(150deg, #f7f8f7 10%, #f2f3f2 58%, #e3e7e6 100%); }
 .hero-inner { min-height: clamp(530px, 43vw, 665px); display: grid; grid-template-columns: 1fr 1fr; align-items: center; position: relative; }
 .hero-copy { position: relative; z-index: 1; padding-block: 36px; }
 .wordmark { width: min(94%, 460px); }
 .hero h2 { font-size: clamp(28px, 4.5vw, 62px); letter-spacing: -.065em; line-height: 1.13; font-weight: 900; font-style: italic; margin-block: 20px; color: #142634; }
 .hero h2 span { text-decoration: underline; text-decoration-color: #ff8392; text-decoration-thickness: .08em; text-underline-offset: .1em; }
 .hero p { color: var(--muted); margin-top: 26px; }
-.cabinet { align-self: end; justify-self: center; width: min(100%, 625px); height: clamp(530px, 43vw, 665px); object-fit: contain; object-position: center bottom; }
+.hero-product { container-type: inline-size; width: 100%; min-width: 0; padding-block: 14px 19px; }
+.product-stage { position: relative; isolation: isolate; height: clamp(455px, 38vw, 590px); --forum-hint-space: 0px; }
+.product-stage::before { content: ''; position: absolute; z-index: -1; left: 10%; right: 10%; bottom: 4%; height: 7%; border-radius: 50%; background: radial-gradient(ellipse, #5b696a24, transparent 69%); }
+.product-stage .cabinet, .product-stage model-viewer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.product-stage model-viewer { opacity: 0; pointer-events: none; --poster-color: transparent; touch-action: pan-y; cursor: grab; }
+.product-stage model-viewer:active { cursor: grabbing; }
+.product-stage[data-view] .cabinet { visibility: hidden; }
+.product-stage[data-view="model"] model-viewer { opacity: 1; pointer-events: auto; }
+.hero-product figcaption { text-align: center; display: grid; justify-items: center; gap: 8px; }
+.hero-product small { color: #65706f; font-size: clamp(8px, 2.9cqw, 11px); line-height: 1.4; white-space: nowrap; }
+.rotation-hint { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: #43504e; letter-spacing: .04em; }
+.rotation-hint[hidden] { visibility: hidden; }
+.rotation-hint > span { font: 23px/1 Arial, sans-serif; }
+@media (prefers-reduced-motion: no-preference) { .product-stage model-viewer { transition: opacity .35s ease; } }
 .actions { margin-top: 23px; gap: 22px; font-size: 14px; }
 .film-link { display: inline-flex; align-items: center; gap: 9px; padding: 10px 20px; border-radius: 24px; background: var(--ink); color: white; }
 .film-link i { border-block: 5px solid transparent; border-left: 8px solid white; }
@@ -124,7 +137,8 @@ video { width: 100%; display: block; aspect-ratio: 1; }
   .hero h2 { font-size: clamp(24px, 8vw, 44px); margin: 14px 0; }
   .hero p { font-size: 14px; margin-top: 10px; }
   .actions { margin-top: 15px; }
-  .cabinet { width: 100%; height: clamp(350px, 100vw, 490px); margin-top: 16px; }
+  .hero-product { padding-block: 8px 20px; }
+  .product-stage { height: clamp(330px, 95vw, 475px); }
   .metric-grid { width: 90%; padding-block: 20px; }
   .metric-grid dt { font-size: 11px; }
   .lighting, .structure, .software, .spec-grid, .detail-grid { grid-template-columns: 1fr; gap: 26px; }
