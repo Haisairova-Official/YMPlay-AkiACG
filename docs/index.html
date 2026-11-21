@@ -7,9 +7,9 @@
   <title>YiMaiPlay · 音乐游戏控制器</title>
   <meta name="description" content="YiMaiPlay 音游手台，搭配 34 分区磨砂触摸玻璃、注塑按键和高亮 LED 灯组。查看机台实拍、按键结构和含桌尺寸。">
   <link rel="icon" href="assets/brand-icon.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=20261122-1">
+  <link rel="stylesheet" href="style.css?v=20261122-2">
   <script defer src="site.js?v=3"></script>
-  <script type="module" src="hero-model.js?v=20261122-1"></script>
+  <script type="module" src="structure-model.js?v=20261122-2"></script>
 </head>
 <body>
 <a class="skip" href="#main">跳至正文</a>
@@ -31,19 +31,7 @@
           <a class="spec-link" href="#specs">查看参数 ↓</a>
         </div>
       </div>
-      <figure class="hero-product">
-        <div class="product-stage">
-          <img class="cabinet" src="assets/cabinet.webp" width="890" height="1110" fetchpriority="high" alt="YiMaiPlay 控制器侧前方">
-          <model-viewer id="hero-model" alt="YiMaiPlay 机台，可拖动或用方向键旋转" camera-controls disable-pan disable-zoom disable-tap touch-action="pan-y"
-            camera-orbit="30deg 78deg 103%" camera-target="0m 0.925m 0m" min-camera-orbit="auto 35deg 103%" max-camera-orbit="auto 95deg 103%"
-            field-of-view="30deg" exposure="1.05" shadow-intensity="0.75" shadow-softness="0.9" environment-image="neutral"
-            interaction-prompt="none" loading="eager" tabindex="-1" aria-hidden="true"><span slot="progress-bar"></span></model-viewer>
-        </div>
-        <figcaption>
-          <span class="rotation-hint" hidden><span aria-hidden="true">⟲</span> 拖动旋转</span>
-          <small>*模型仅供展示参考，与量产机型有细微差别，建议参考实拍照片后选购。</small>
-        </figcaption>
-      </figure>
+      <img class="cabinet" src="assets/cabinet.webp" width="890" height="1110" fetchpriority="high" alt="YiMaiPlay 控制器侧前方，可见环形按键、珍珠白机壳和方管支架">
     </div>
   </section>
   <div class="metrics" id="metrics">
@@ -89,7 +77,19 @@
     </div>
   </div></section>
   <section class="wrap section structure" id="structure">
-    <img src="assets/dimensions.webp" width="490" height="994" loading="lazy" alt="侧面可见珍珠白机壳、背靠焊接方管和底部支撑">
+      <figure class="structure-product">
+        <div class="product-stage">
+          <img class="structure-photo" src="assets/dimensions.webp" width="490" height="994" loading="lazy" alt="YiMaiPlay 控制器、机壳与方管支架侧面实拍">
+          <model-viewer id="structure-model" alt="YiMaiPlay 机台，可拖动或用方向键旋转" camera-controls disable-pan disable-zoom disable-tap touch-action="pan-y"
+            camera-orbit="30deg 78deg 103%" camera-target="0m 0.925m 0m" min-camera-orbit="auto 35deg 103%" max-camera-orbit="auto 95deg 103%"
+            field-of-view="30deg" exposure="1.05" shadow-intensity="0.75" shadow-softness="0.9" environment-image="neutral"
+            interaction-prompt="none" loading="eager" tabindex="-1" aria-hidden="true"><span slot="progress-bar"></span></model-viewer>
+        </div>
+        <figcaption>
+          <span class="rotation-hint" hidden><span aria-hidden="true">⟲</span> 拖动旋转</span>
+          <small>*模型仅供展示参考，与量产机型有细微差别，建议参考实拍照片后选购。</small>
+        </figcaption>
+      </figure>
     <div>
       <h2>媲美街机的高度和倾角</h2>
       <p>机壳用全钢制作，珍珠白磨砂烤漆,耐指纹，更耐脏。背后方管支架一体焊接，以街机的高度和角度支起机身。</p>

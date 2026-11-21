@@ -1,6 +1,6 @@
 import { mountTurntable } from './ad/forum-turntable.js';
 
-const model = document.querySelector('#hero-model');
+const model = document.querySelector('#structure-model');
 const stage = model.parentElement;
 const hint = stage.parentElement.querySelector('.rotation-hint');
 let turntable;
@@ -40,7 +40,6 @@ async function showTurntable() {
   hint.hidden = false;
 }
 
-showTurntable().catch(() => { /* The product photo stays visible until the GLB loads. */ });
 model.addEventListener('load', showModel);
 model.addEventListener('error', () => {
   if (stage.dataset.view !== 'model') return;
@@ -57,4 +56,17 @@ async function loadModel() {
   await import('./model/vendor/model-viewer.min.js');
   model.src = new URL('./model/yimaiplay.glb?v=20261122-1', import.meta.url).href;
 }
-loadModel().catch(() => { /* The turntable also supports drag and keyboard rotation. */ });
+function start() {
+  showTurntable().catch(() => { /* Keep the side-view photograph while the model loads. */ });
+  loadModel().catch(() => { /* The turntable also supports drag and keyboard rotation. */ });
+}
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    observer.disconnect();
+    start();
+  }, { rootMargin: '320px' });
+  observer.observe(stage);
+} else {
+  start();
+}
