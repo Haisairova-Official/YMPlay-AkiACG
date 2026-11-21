@@ -1,0 +1,32 @@
+:root { color-scheme: dark; --menu-bg: #171b1d; --menu-border: #343b3e; --menu-hover: #262d30; font-family: Inter, Arial, "PingFang SC", "Microsoft YaHei", sans-serif; background: #080a0c; color: #e7edef; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: radial-gradient(ellipse at 50% 46%, #121b20 0%, #0b1013 35%, #080a0c 67%); }
+h1,p,figure { margin: 0; }
+a { text-decoration: none; color: inherit; }
+a:focus-visible, summary:focus-visible { outline: 2px solid #bee6ea; outline-offset: 4px; }
+header { position: relative; z-index: 5; border-bottom: 1px solid #202528; }
+nav { width: min(88%,1180px); margin: auto; height: 62px; display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: #b9c1c4; }
+.brand img { display: block; width: 112px; height: auto; }
+nav .product-links { left: auto; right: 0; }
+main { position: relative; z-index: 1; width: min(84%, 960px); margin: auto; padding: clamp(38px, 6vh, 72px) 0 clamp(26px,4vh,50px); }
+.intro { text-align: center; position: relative; z-index: 1; }
+h1 { font-size: clamp(68px, 9.8vw, 144px); font-weight: 700; letter-spacing: -.084em; line-height: .96; color: #edf0f0; }
+h1 span { font-weight: 300; margin-left: .04em; color: #a7b5bb; }
+.release { margin-top: 18px; display: flex; align-items: center; justify-content: center; gap: 16px; color: #bdc9cb; font-size: 13px; letter-spacing: .22em; }
+.release time, .price { font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.release time { letter-spacing: .12em; }
+.release time span { padding-inline: .15em; color: #718087; }
+.release b { font-weight: 500; color: #b9ecdf; }
+.release i { height: 1px; width: 22px; background: #596467; }
+.silhouette { position: relative; width: min(100%, clamp(360px, 52vh, 540px)); aspect-ratio: 790/744; margin: clamp(13px, 2.5vh,30px) auto; isolation: isolate; }
+.silhouette img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.silhouette img { filter: grayscale(1) brightness(1.65) blur(6px); mask-image: radial-gradient(circle,black 32%,transparent 52%); mask-size: 3px 3px; }
+.silhouette[data-ready] img { visibility: hidden; }
+.price-strip { border-top: 1px solid #333d41; padding-top: 18px; display: flex; align-items: center; justify-content: flex-end; }
+.price { display: flex; align-items: baseline; color: #d1e7e5; font-size: clamp(42px,6vw,76px); line-height: 1; letter-spacing: -.06em; }
+.price b { font-weight: 500; }
+.yen { font-size: .48em; margin-right: .22em; color: #94a8ab; }
+.unknown { color: #78898e; }
+@media (max-width: 600px) { nav { height: 54px; } .brand img { width: 90px; } main { position: relative; z-index: 1; width: 88%; padding-top: 55px; } .silhouette { width: 100%; margin: 37px auto; } .release { font-size: 11px; gap: 10px; } }
+
+#starfield { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }

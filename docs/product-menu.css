@@ -1,0 +1,9 @@
+.product-menu { position: relative; z-index: 8; text-align: left; }
+.product-menu summary { display: flex; align-items: center; gap: 6px; min-height: 42px; cursor: pointer; list-style: none; white-space: nowrap; }
+.product-menu summary::-webkit-details-marker { display: none; }
+.product-menu summary::after { content: ""; width: 5px; height: 5px; border: solid currentColor; border-width: 0 1px 1px 0; transform: translateY(-2px) rotate(45deg); }
+.product-menu[open] summary::after { transform: translateY(1px) rotate(225deg); }
+.product-links { position: absolute; top: calc(100% - 1px); left: 0; min-width: 146px; padding: 5px; border: 1px solid var(--menu-border,#d7dfe2); border-radius: 10px; background: var(--menu-bg,#fff); box-shadow: 0 10px 36px #0002; }
+.product-links a { display: block; padding: 9px 13px; border-radius: 6px; font: 550 14px/1.5 Inter, Arial, sans-serif; text-decoration: none; color: inherit; }
+.product-links a:hover, .product-links a:focus-visible { background: var(--menu-hover,#edf3f4); text-decoration: none; }
+.product-links a[aria-current]::after { content: ""; display: inline-block; vertical-align: middle; margin-left: 8px; width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
