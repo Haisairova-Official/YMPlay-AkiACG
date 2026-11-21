@@ -33,9 +33,13 @@ nav a:hover, .spec-link:hover, .back-top:hover, .guide-link:hover { text-decorat
 .hero h2 span { text-decoration: underline; text-decoration-color: #ff8392; text-decoration-thickness: .08em; text-underline-offset: .1em; }
 .hero p { color: var(--muted); margin-top: 26px; }
 .cabinet { align-self: end; justify-self: center; width: min(100%, 625px); height: clamp(530px, 43vw, 665px); object-fit: contain; object-position: center bottom; }
-.actions { margin-top: 23px; gap: 22px; font-size: 14px; }
-.film-link { display: inline-flex; align-items: center; gap: 9px; padding: 10px 20px; border-radius: 24px; background: var(--ink); color: white; }
-.film-link i { border-block: 5px solid transparent; border-left: 8px solid white; }
+.actions { margin-top: 23px; flex-wrap: wrap; gap: 10px 18px; font-size: 14px; }
+.buy-link { padding: 10px 20px; border-radius: 24px; background: var(--ink); color: white; font-weight: 650; }
+.buy-link:hover { background: #254858; }
+.film-link { display: inline-flex; align-items: center; gap: 7px; color: var(--accent); font-weight: 600; }
+.hero .presale { margin-top: 12px; font-size: 13px; }
+.presale strong { margin-left: 4px; font-variant-numeric: tabular-nums; user-select: all; }
+.film-link i { border-block: 5px solid transparent; border-left: 8px solid currentColor; }
 .spec-link, .guide-link { color: var(--accent); font-weight: 600; }
 .metrics { background: #262822; color: #faf8ef; }
 .metric-grid {
