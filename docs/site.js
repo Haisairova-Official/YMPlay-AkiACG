@@ -47,8 +47,90 @@ if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: re
   }, { threshold: 0.08 });
 
   for (const element of document.querySelectorAll(
-    '.light-photo, .detail-grid article, .structure > img, .software > img, .dimensions figure'
+    '.structure > div, .software > img, .dimensions figure'
   )) {
     reveal.observe(element);
   }
 }
+
+const story = document.querySelector('.detail-story');
+const chapters = Array.from(story.querySelectorAll('article'));
+const stage = document.createElement('div');
+stage.className = 'detail-stage';
+stage.setAttribute('aria-hidden', 'true');
+const frames = chapters.map(chapter => {
+  const frame = chapter.querySelector('img').cloneNode();
+  frame.alt = '';
+  frame.loading = 'eager';
+  stage.append(frame);
+  return frame;
+});
+const motion = matchMedia('(prefers-reduced-motion: no-preference)');
+const tall = matchMedia('(min-height: 540px)');
+const hero = document.querySelector('.hero');
+const metrics = document.querySelector('.metrics');
+const narrow = matchMedia('(max-width: 700px)');
+let queued = false;
+let ready = false;
+
+function paintScroll() {
+  queued = false;
+  const height = document.documentElement.clientHeight;
+  if (!motion.matches) return;
+  const headerHeight = document.querySelector('header').offsetHeight;
+  const heroHeight = hero.offsetHeight;
+  const pinTop = Math.min(headerHeight, height - heroHeight);
+  const cover = Math.max(0, Math.min(1, (pinTop + heroHeight - metrics.getBoundingClientRect().top) / heroHeight));
+  hero.style.setProperty('--cabinet-offset', (cover * heroHeight).toFixed(1) + 'px');
+  hero.style.setProperty('--cover', cover.toFixed(3));
+  const lightBox = lighting.getBoundingClientRect();
+  if (lightBox.bottom > 0 && lightBox.top < height) {
+    const entrance = Math.max(0, Math.min(1, (height - lightBox.top) / (height * .78)));
+    lighting.style.setProperty('--light-scale', (1 + .32 * (1 - entrance)).toFixed(4));
+  }
+  if (!ready || !tall.matches) return;
+  const bounds = story.getBoundingClientRect();
+  if (bounds.bottom < 0 || bounds.top > height) return;
+  const target = narrow.matches
+    ? 55 + stage.offsetHeight + height * .23
+    : (height + 64) / 2;
+  const centers = chapters.map(chapter => {
+    const rect = chapter.getBoundingClientRect();
+    return rect.top + rect.height / 2;
+  });
+  for (let i = 1; i < frames.length; i++) {
+    const fraction = (target - centers[i - 1]) / (centers[i] - centers[i - 1]);
+    const mix = Math.max(0, Math.min(1, (fraction - .15) / .7));
+    frames[i].style.opacity = (mix * mix * (3 - 2 * mix)).toFixed(3);
+  }
+}
+
+function queuePaint() {
+  if (!queued) {
+    queued = true;
+    requestAnimationFrame(paintScroll);
+  }
+}
+
+function syncMotion() {
+  story.classList.toggle('is-scrolling', motion.matches && tall.matches && ready);
+  document.querySelector('.intro-sequence').classList.toggle('pin-hero', motion.matches);
+  if (motion.matches) {
+    window.addEventListener('scroll', queuePaint, { passive: true });
+    window.addEventListener('resize', queuePaint);
+    queuePaint();
+  } else {
+    window.removeEventListener('scroll', queuePaint);
+    window.removeEventListener('resize', queuePaint);
+    lighting.style.removeProperty('--light-scale');
+  }
+}
+
+Promise.all(frames.map(frame => frame.decode())).then(() => {
+  story.prepend(stage);
+  ready = true;
+  syncMotion();
+}).catch(() => { /* Keep the original photographed articles if a frame fails. */ });
+tall.addEventListener('change', syncMotion);
+motion.addEventListener('change', syncMotion);
+syncMotion();
