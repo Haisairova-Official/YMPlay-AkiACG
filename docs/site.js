@@ -1,3 +1,21 @@
+const cabinetView = document.querySelector('.cabinet-view');
+const shotControls = cabinetView.querySelector('.cabinet-views');
+const shotLabels = {
+  whole: 'YiMaiPlay 控制器侧前方，可见环形按键、珍珠白机壳和方管支架',
+  ring: '环形按键和中间的磨砂触摸玻璃特写',
+  screen: '机台上部的副屏和屏幕边框特写'
+};
+shotControls.hidden = false;
+shotControls.addEventListener('click', event => {
+  const selected = event.target.closest('button[data-shot]');
+  if (!selected) return;
+  cabinetView.dataset.view = selected.dataset.shot;
+  cabinetView.querySelector('.cabinet').alt = shotLabels[selected.dataset.shot];
+  for (const button of shotControls.querySelectorAll('button')) {
+    button.setAttribute('aria-pressed', String(button === selected));
+  }
+});
+
 const photo = document.querySelector('#light-image');
 const caption = document.querySelector('#light-caption');
 const lighting = document.querySelector('.lighting');
@@ -67,8 +85,6 @@ const frames = chapters.map(chapter => {
 });
 const motion = matchMedia('(prefers-reduced-motion: no-preference)');
 const tall = matchMedia('(min-height: 540px)');
-const hero = document.querySelector('.hero');
-const metrics = document.querySelector('.metrics');
 const narrow = matchMedia('(max-width: 700px)');
 let queued = false;
 let ready = false;
@@ -77,12 +93,6 @@ function paintScroll() {
   queued = false;
   const height = document.documentElement.clientHeight;
   if (!motion.matches) return;
-  const headerHeight = document.querySelector('header').offsetHeight;
-  const heroHeight = hero.offsetHeight;
-  const pinTop = Math.min(headerHeight, height - heroHeight);
-  const cover = Math.max(0, Math.min(1, (pinTop + heroHeight - metrics.getBoundingClientRect().top) / heroHeight));
-  hero.style.setProperty('--cabinet-offset', (cover * heroHeight).toFixed(1) + 'px');
-  hero.style.setProperty('--cover', cover.toFixed(3));
   const lightBox = lighting.getBoundingClientRect();
   if (lightBox.bottom > 0 && lightBox.top < height) {
     const entrance = Math.max(0, Math.min(1, (height - lightBox.top) / (height * .78)));
@@ -114,7 +124,6 @@ function queuePaint() {
 
 function syncMotion() {
   story.classList.toggle('is-scrolling', motion.matches && tall.matches && ready);
-  document.querySelector('.intro-sequence').classList.toggle('pin-hero', motion.matches);
   if (motion.matches) {
     window.addEventListener('scroll', queuePaint, { passive: true });
     window.addEventListener('resize', queuePaint);

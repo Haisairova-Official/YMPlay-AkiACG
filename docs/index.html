@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f3f8fb">
+  <meta name="theme-color" content="#131415">
   <title>YiMaiPlay · 音乐游戏控制器</title>
   <meta name="description" content="YiMaiPlay 音游手台，搭配 34 分区磨砂触摸玻璃、注塑按键和高亮 LED 灯组。查看机台实拍、按键结构和含桌尺寸。">
   <link rel="icon" href="assets/brand-icon.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=20261125-photo">
+  <link rel="stylesheet" href="style.css?v=20261125-steady">
   <link rel="stylesheet" href="product-menu.css">
   <script defer src="product-menu.js"></script>
-  <script defer src="site.js?v=20261125-photo"></script>
+  <script defer src="site.js?v=20261125-steady"></script>
   <script type="module" src="structure-model.js?v=20261122-2"></script>
 </head>
 <body>
@@ -21,7 +21,7 @@
     <nav aria-label="主导航"><details class="product-menu">
         <summary>产品介绍</summary>
         <div class="product-links"><a href="#light" aria-current="page">YiMaiPlay</a><a href="lite.html">YiMaiLite</a></div>
-      </details><a href="#specs">参数与安装</a><a href="assets/product-guide.webp">产品原图 ↗</a></nav>
+      </details><a class="craft-link" href="#details">工艺</a><a href="#specs">参数与安装</a><a class="nav-buy" href="https://item.taobao.com/item.htm?id=1094989437222" target="_blank" rel="noopener">购买</a></nav>
   </div>
 </header>
 <main id="main">
@@ -39,7 +39,16 @@
         </div>
         <p class="presale">售前群号 <strong>1073641064</strong></p>
       </div>
-      <img class="cabinet" src="assets/cabinet.webp" width="890" height="1110" fetchpriority="high" alt="YiMaiPlay 控制器侧前方，可见环形按键、珍珠白机壳和方管支架">
+      <figure class="cabinet-view" data-view="whole">
+        <div class="cabinet-window">
+          <img draggable="false" class="cabinet" src="assets/cabinet.webp" width="890" height="1110" fetchpriority="high" alt="YiMaiPlay 控制器侧前方，可见环形按键、珍珠白机壳和方管支架">
+        </div>
+        <div class="cabinet-views" role="group" aria-label="选择机台实拍视角" hidden>
+          <button type="button" data-shot="whole" aria-pressed="true">整机</button>
+          <button type="button" data-shot="ring" aria-pressed="false">灯圈</button>
+          <button type="button" data-shot="screen" aria-pressed="false">副屏</button>
+        </div>
+      </figure>
     </div>
   </section>
   <div class="metrics" id="metrics">
