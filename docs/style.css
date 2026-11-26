@@ -372,7 +372,6 @@ header nav a.is-active { color: #f4cfb0; }
   opacity: var(--progress-vis, 0); transition: opacity .35s ease;
   pointer-events: none;
 }
-.menu-extra { display: none; }
 
 /* Hero: the photo stays completely steady while scrolling; ambient glow follows clicked view. */
 .cabinet-view::before {
@@ -679,9 +678,6 @@ dialog { box-shadow: 0 40px 80px rgba(0, 0, 0, .45); border-radius: 18px; overfl
     border-bottom: 1px solid rgba(255, 255, 255, .07);
   }
   header .product-links a:last-child { border-bottom: 0; }
-  header .product-links .menu-extra { display: block; }
-  header .product-links .menu-sep { height: 10px; border: 0; }
-  header .product-links a.menu-extra { font-size: 15px; font-weight: 500; color: #c9c8c5; }
 
   .hero-copy { padding-top: 38px; }
   .hero .wordmark { width: min(66%, 260px); }
@@ -728,6 +724,4 @@ dialog { box-shadow: 0 40px 80px rgba(0, 0, 0, .45); border-radius: 18px; overfl
   .product-menu[open] .product-links { animation: sheet-down .42s var(--ease-out) both; transform-origin: top center; }
   .product-menu[open] .product-links > * { animation: rise-in .48s var(--ease-out) backwards; }
   .product-menu[open] .product-links > :nth-child(2) { animation-delay: .04s; }
-  .product-menu[open] .product-links > :nth-child(4) { animation-delay: .08s; }
-  .product-menu[open] .product-links > :nth-child(5) { animation-delay: .11s; }
 }
